@@ -172,7 +172,12 @@ def _get_detail(exc, exception_key: Union[str, List[str]] = "") -> str:
                 for key in exception_key:
                     value = value[key]
 
-            return str(value if isinstance(value, str) else value[0])
+            if isinstance(value, str):
+                return value
+            elif isinstance(value, dict):
+                return value.get("detail")
+            else:
+                return str(value[0])
         elif isinstance(exc.detail, list) and len(exc.detail) > 0:
             return exc.detail[0]
 
